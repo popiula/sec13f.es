@@ -20,8 +20,6 @@ Imports:
     R.utils,
     stringi,
     stringr
-URL: https://github.com/Popiula/sec13f.es/
-BugReports: https://github.com/Popiula/sec13f.es/issues/
 Suggests: 
     knitr,
     rmarkdown
