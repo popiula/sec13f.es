@@ -32,5 +32,5 @@ En construccion
 
 ## Copyright and License
 
-Copyright 2018-2019 Ana Guardia  
+Copyright 2019 Ana Guardia  
 Licensed under the GPLv3
