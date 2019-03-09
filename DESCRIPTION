@@ -1,0 +1,29 @@
+Package: sec13f.es
+Title: Crea una base de datos en mongoDB con los formularios 13f de la SEC
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Ana",
+           family = "Guardia",
+           role = c("aut", "cre"),
+           email = "ana.guardia@gmail.com")
+Description: El paquete sirve para construir una base de datos en mongoDB a partir de 
+    la informacion online disponible en EDGAR de los formularios 13f de la SEC.
+    Los formularios 13f contienen informacion de las carteras de inversores en EEUU con 
+    mas de 100 millones de dolares en acciones.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    XML,
+    dplyr,
+    mongolite,
+    R.utils,
+    stringi,
+    stringr
+URL: https://github.com/Popiula/sec13f.es/
+BugReports: https://github.com/Popiula/sec13f.es/issues/
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
+RoxygenNote: 6.1.1

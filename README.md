@@ -1,33 +1,37 @@
-readme sec13f package
-================
+readme sec13f.es package
+========================
 
-## GitHub Documents
+En construccion
 
-This is an R Markdown format used for publishing markdown documents to
-GitHub. When you click the **Knit** button all R code chunks are run and
-a markdown file (.md) suitable for publishing to GitHub is generated.
+# Paquete sec13f.es
 
-## Including Code
+En construccion
 
-You can include R code in the document as follows:
+## Como funciona el paquete
 
-``` r
-summary(cars)
+En construccion
+
+## Por donde empezar
+
+Lo primero que necesitas es instalar y cargar el paquete `devtools` desde CRAN:
+
+```r
+install.packages("devtools")
+library(devtools)
+```
+Despues, instala el paquete `sec13f.es` desde GitHub:
+
+```r
+install_github("Popiula/sec13f.es")
+library("sec13f.es")
 ```
 
-    ##      speed           dist       
-    ##  Min.   : 4.0   Min.   :  2.00  
-    ##  1st Qu.:12.0   1st Qu.: 26.00  
-    ##  Median :15.0   Median : 36.00  
-    ##  Mean   :15.4   Mean   : 42.98  
-    ##  3rd Qu.:19.0   3rd Qu.: 56.00  
-    ##  Max.   :25.0   Max.   :120.00
+## Un ejemplo sencillo
 
-## Including Plots
+En construccion
 
-You can also embed plots, for example:
+## Copyright and License
 
-![](README_files/figure-gfm/pressure-1.png)<!-- -->
+Copyright 2018-2019 Ana Guardia
+Licensed under the GPLv3
 
-Note that the `echo = FALSE` parameter was added to the code chunk to
-prevent printing of the R code that generated the plot.

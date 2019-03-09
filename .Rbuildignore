@@ -1,0 +1,5 @@
+^LICENSE\.md$
+^sec13f\.Rproj$
+^\.Rproj\.user$
+^packrat/
+^\.Rprofile$
