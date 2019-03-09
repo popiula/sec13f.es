@@ -1,6 +1,6 @@
 #' Extrae informacion del archivo .txt que proporciona EDGAR (SEC).
 #'
-#' @param file una direccion a un archivo de texto desde el directorio de trabajo.
+#' @param linkArchivo una direccion a un archivo de texto desde el directorio de trabajo.
 #'
 #' @return  devuelve una lista con 3 elementos, el primero es la parte descriptiva del formulario;
 #' el segundo es la tabla de inversiones; y el tercero el numero de filas que tiene la tabla de inversiones
@@ -18,7 +18,7 @@
 #' @import readr
 #'
 #' @export
-extraeDatos <- function(file) {
+extraeDatos <- function(linkArchivo) {
     # print('dentro funcion extraeDatos()') la siguiente funcion la uso para extraer la informacion de la parte del encabezado
     # que es HTML
     extractFromTags <- function(txtData, pattern) {
