@@ -6,11 +6,11 @@
 #' formulario.
 #'
 #' @usage recorreFormularios(coleccion = paste0(format(Sys.Date(),'%Y%m%d'), 'indice'),
-#'                           db = paste0(format(Sys.Date(),'%Y%m%d'), 'sec13f'),
+#'                           nombreBD = paste0(format(Sys.Date(),'%Y%m%d'), 'sec13f'),
 #'                           mongoURL = 'mongodb://localhost:27017')
 #'
 #' @param coleccion nombre de la coleccion de mongo que contiene el indice de los formularios a recorrer
-#' @param bd nombre de la base de datos de mongo que contiene el indice de los formularios a recorrer
+#' @param nombreBD nombre de la base de datos de mongo que contiene el indice de los formularios a recorrer
 #' @param mongoURL parametro de la url necesaria para concectar con mongo
 #'
 #' @return devuelve el dataframe con el listado de los formularios registrados en ese o esos periodos.
@@ -21,7 +21,7 @@
 #' @examples
 #' \dontrun{
 #' recorreFormularios(coleccion = paste0(format(Sys.Date(),'%Y%m%d'), 'indice'),
-#'                    bd = paste0(format(Sys.Date(),'%Y%m%d'), 'sec13f'),
+#'                    nombreBD = paste0(format(Sys.Date(),'%Y%m%d'), 'sec13f'),
 #'                    mongoURL = 'mongodb://localhost:27017')
 #'}
 #'
@@ -31,7 +31,7 @@
 #'
 #'@export
 recorreFormularios <- function( coleccion = paste0( format(Sys.Date(), "%Y%m%d"), "indice"),
-                                bd = paste0( format(Sys.Date(), "%Y%m%d"), "sec13f"),
+                                nombreBD = paste0( format(Sys.Date(), "%Y%m%d"), "sec13f"),
                                 mongoURL = "mongodb://localhost:27017") {
     inicio <- Sys.time()  # se usa para calcular el tiempo medio
     # options(warn = -1) # remove warnings

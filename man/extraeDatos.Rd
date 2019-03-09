@@ -4,10 +4,10 @@
 \alias{extraeDatos}
 \title{Extrae informacion del archivo .txt que proporciona EDGAR (SEC).}
 \usage{
-extraeDatos(file)
+extraeDatos(linkArchivo)
 }
 \arguments{
-\item{file}{una direccion a un archivo de texto desde el directorio de trabajo.}
+\item{linkArchivo}{una direccion a un archivo de texto desde el directorio de trabajo.}
 }
 \value{
 devuelve una lista con 3 elementos, el primero es la parte descriptiva del formulario;

@@ -18,6 +18,7 @@ Imports:
     dplyr,
     mongolite,
     R.utils,
+    readr,
     stringi,
     stringr
 Suggests: 

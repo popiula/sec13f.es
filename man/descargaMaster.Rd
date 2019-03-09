@@ -3,28 +3,28 @@
 \name{descargaMaster}
 \alias{descargaMaster}
 \title{Es una funcion interna que descarga un archivo en el directorio de trabajo
-Es llamada por la funcion \link[sec13f]{indice13f}}
+Es llamada por la funcion \link[sec13f.es]{indice13f}}
 \usage{
-descargaMaster(link, filename, dmethod)
+descargaMaster(link, nombreArchivo, metodoD)
 }
 \arguments{
 \item{link}{direccion donde se encuentra el archivo a descargar}
 
-\item{filename}{nombre que se le da al archivo una vez descargado}
+\item{nombreArchivo}{que se le da al archivo una vez descargado}
 
-\item{dmethod}{metodo de descarga}
+\item{metodoD}{metodo de descarga}
 }
 \value{
 descarga el archivo master y devuelve verdadero o falso en funcion de si ha podido descargarlo o no
 }
 \description{
 Es una funcion interna que descarga un archivo en el directorio de trabajo
-Es llamada por la funcion \link[sec13f]{indice13f}
+Es llamada por la funcion \link[sec13f.es]{indice13f}
 }
 \examples{
 \dontrun{
 
-descargaMaster(link, filename, dmethod)
+descargaMaster(link, nombreArchivo, metodoD)
 
 }
 
