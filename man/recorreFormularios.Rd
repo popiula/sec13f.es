@@ -5,13 +5,13 @@
 \title{Descarga y devuelve el contenido de los formularios de un archivo indice o solo los descarga, a eleccion del usuario}
 \usage{
 recorreFormularios(coleccion = paste0(format(Sys.Date(),'%Y%m%d'), 'indice'),
-                          db = paste0(format(Sys.Date(),'%Y%m%d'), 'sec13f'),
+                          nombreBD = paste0(format(Sys.Date(),'%Y%m%d'), 'sec13f'),
                           mongoURL = 'mongodb://localhost:27017')
 }
 \arguments{
 \item{coleccion}{nombre de la coleccion de mongo que contiene el indice de los formularios a recorrer}
 
-\item{bd}{nombre de la base de datos de mongo que contiene el indice de los formularios a recorrer}
+\item{nombreBD}{nombre de la base de datos de mongo que contiene el indice de los formularios a recorrer}
 
 \item{mongoURL}{parametro de la url necesaria para concectar con mongo}
 }
@@ -30,7 +30,7 @@ formulario.
 \examples{
 \dontrun{
 recorreFormularios(coleccion = paste0(format(Sys.Date(),'\%Y\%m\%d'), 'indice'),
-                   bd = paste0(format(Sys.Date(),'\%Y\%m\%d'), 'sec13f'),
+                   nombreBD = paste0(format(Sys.Date(),'\%Y\%m\%d'), 'sec13f'),
                    mongoURL = 'mongodb://localhost:27017')
 }
 

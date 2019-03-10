@@ -18,9 +18,9 @@ Extrae informacion del archivo .txt que proporciona EDGAR (SEC).
 }
 \examples{
 \dontrun{
-file <- "https://www.sec.gov/Archives/edgar/data/1167557/000108514619000779/0001085146-19-000779.txt"
+linkArchivo <- "https://www.sec.gov/Archives/edgar/data/1167557/000108514619000779/0001085146-19-000779.txt"
 
-extraeDatos(file)
+extraeDatos(linkArchivo)
 extraeDatos("https://www.sec.gov/Archives/edgar/data/1167557/000108514619000779/0001085146-19-000779.txt")
 }
 

@@ -69,10 +69,10 @@ recorreFormularios <- function( coleccion = paste0( format(Sys.Date(), "%Y%m%d")
             ## vamos con mongoDB ################################################################################################ inicio
             ## una conexion en mongoDB ###########################################################################################3
             if (superaTiempo == 0) {
-                conexion <- mongo(collection = "des13f", db = "sec13f", url = "mongodb://localhost:27017")
+                conexion <- mongo(collection = "header", db = "sec13f", url = "mongodb://localhost:27017")
                 conexion$insert(datos[[1]])
                 if (!is.na(datos[[2]])) {
-                  conexion <- mongo(collection = "holdings13f", db = "sec13f", url = "mongodb://localhost:27017")
+                  conexion <- mongo(collection = paste0("holdings", datos[[1]]$period), db = "sec13f", url = "mongodb://localhost:27017")
                   conexion$insert(datos[[2]])
                 } else {
                   conexion <- mongo(collection = "incidenciasHoldings", db = "sec13f", url = "mongodb://localhost:27017")
@@ -81,7 +81,7 @@ recorreFormularios <- function( coleccion = paste0( format(Sys.Date(), "%Y%m%d")
             } else if (superaTiempo == 1) {
                 print("Error en el formulario, salto al siguiente")
                 conexion <- mongo(collection = "incidencias", db = "sec13f", url = "mongodb://localhost:27017")
-                conexion$insert(str_sub(master$EDGAR_LINK[i], -24, -5))
+                conexion$insert(stringr::str_sub(master$EDGAR_LINK[i], -24, -5))
             }
         }  # loop
         conexion <- mongo(collection = "registro", db = "sec13f", url = "mongodb://localhost:27017")

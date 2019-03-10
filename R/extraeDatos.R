@@ -7,9 +7,9 @@
 #'
 #' @examples
 #' \dontrun{
-#' file <- "https://www.sec.gov/Archives/edgar/data/1167557/000108514619000779/0001085146-19-000779.txt"
+#' linkArchivo <- "https://www.sec.gov/Archives/edgar/data/1167557/000108514619000779/0001085146-19-000779.txt"
 #'
-#' extraeDatos(file)
+#' extraeDatos(linkArchivo)
 #' extraeDatos("https://www.sec.gov/Archives/edgar/data/1167557/000108514619000779/0001085146-19-000779.txt")
 #' }
 #'
@@ -17,7 +17,6 @@
 #' @import stringr
 #' @import readr
 #'
-#' @export
 extraeDatos <- function(linkArchivo) {
     # print('dentro funcion extraeDatos()') la siguiente funcion la uso para extraer la informacion de la parte del encabezado
     # que es HTML
@@ -43,8 +42,7 @@ extraeDatos <- function(linkArchivo) {
             return(XML::xmlValue(ele))
         }
     }
-    ## parseXML
-    ## ####################################################################################################################
+    ## parseXML ######################################################################################################################
     parseXML <- function(xml_root, campos) {
         datos <- NULL
         datos <- unlist(XML::xmlApply(xml_root, processNode))
@@ -53,8 +51,7 @@ extraeDatos <- function(linkArchivo) {
         datos <- datos[campos]
         return(datos)
     }
-    ## parse13f
-    ## ####################################################################################################################
+    ## parse13f ####################################################################################################################
     parse13f <- function(xml_root, campos) {
         info <- XML::getNodeSet(xml_root, "//*[local-name() = 'infoTable']")
         infoTable <- NULL
@@ -69,7 +66,7 @@ extraeDatos <- function(linkArchivo) {
         return(list(infoTable, n))
     }
     ## CARGO EL TEXTO : txtData #####################################################################################
-    txtData <- readr::read_file(file)  # cargo el contenido del archivo de texto, funcion del paquete readr de tityverse
+    txtData <- readr::read_file(linkArchivo)  # cargo el contenido del archivo de texto, funcion del paquete readr de tityverse
     ## HEADER ########################################################################################################
     ## print('Dentro Cover Page') Campos de la cara tula
     fields <- c("ACCEPTANCE-DATETIME", "ACCESSION NUMBER", "CONFORMED SUBMISSION TYPE", "PUBLIC DOCUMENT COUNT", "CONFORMED PERIOD OF REPORT",

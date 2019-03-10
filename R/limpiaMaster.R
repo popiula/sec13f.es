@@ -30,9 +30,9 @@ limpiaMaster <- function(coleccion = paste0(format(Sys.Date(), "%Y%m%d"), "indic
                          nombreBD = paste0(format(Sys.Date(), "%Y%m%d"), "sec13f"),
                          mongoURL = "mongodb://localhost:27017") {
 # options(warn = -1) # remove warnings library(mongolite)
-conexion <- mongo(collection = coleccion, db = bd, url = url)
+conexion <- mongo(collection = coleccion, db = nombreBD, url = mongoURL)
 master <- conexion$find()
-conexion <- mongo(collection = "des13f", db = bd, url = url)
+conexion <- mongo(collection = "des13f", db = nombreBD, url = mongoURL)
 mongoMaster <- conexion$find(query = "{}", fields = "{\"accessionNumber\" : true, \"_id\": false}"  #query = '{}', fields = '{'accessionNumber' : true, '_id': true}'
 )
 
