@@ -32,7 +32,7 @@ recorreFormularios <- function( coleccion = paste0( format(Sys.Date(), "%Y%m%d")
     
     inicio <- Sys.time()  # se usa para calcular el tiempo medio
     # options(warn = -1) # remove warnings
-    master <- limpiaMaster(coleccion = coleccion, db = nombreBD, mongoURL = mongoURL)
+    master <- limpiaMaster(coleccion = coleccion, nombreBD = nombreBD, mongoURL = mongoURL)
     master <- master[order(master$dateFiled, decreasing = T), ] 
     if (nrow(master) > 0) {
         total.forms <- nrow(master)
@@ -51,7 +51,7 @@ recorreFormularios <- function( coleccion = paste0( format(Sys.Date(), "%Y%m%d")
                   extraeDatos(link)
                 }, timeout = 60 * 5)
             }, TimeoutException = function(ex) {
-                message(paste0(str_sub(master$EDGAR_LINK[i], -24, -5), " Timeout. Salta el formulario."))
+                message(paste0(stringr::str_sub(master$edgarLink[i], -24, -5), " Timeout. Salta el formulario."))
             })
 
             if (is.null(datos)) {
@@ -61,27 +61,27 @@ recorreFormularios <- function( coleccion = paste0( format(Sys.Date(), "%Y%m%d")
             tempStatus <- data.frame(nform = i, totalForms = total.forms, accessionNumber = str_sub(master$EDGAR_LINK[i], -24,
                 -5), hora = format(Sys.time(), "%H:%M:%S"), tiempoMedio = tmedio, excedeTiempo = superaTiempo, nfilas = datos[[3]])
             print(tempStatus)
-            conexion <- mongo(collection = "registro", db = "sec13f", url = "mongodb://localhost:27017")
+            conexion <- mongo(collection = "registro", db = "sec13f", url = mongoURL)
             conexion$insert(tempStatus)
             ## vamos con mongoDB ################################################################################################ inicio
             ## una conexion en mongoDB ###########################################################################################3
             if (superaTiempo == 0) {
-                conexion <- mongo(collection = "header", db = "sec13f", url = "mongodb://localhost:27017")
+                conexion <- mongo(collection = "header", db = "sec13f", url = mongoURL)
                 conexion$insert(datos[[1]])
                 if (!is.na(datos[[2]])) {
-                  conexion <- mongo(collection = paste0("holdings", datos[[1]]$period), db = "sec13f", url = "mongodb://localhost:27017")
+                  conexion <- mongo(collection = paste0("holdings", datos[[1]]$period), db = "sec13f", url = mongoURL)
                   conexion$insert(datos[[2]])
                 } else {
-                  conexion <- mongo(collection = "incidenciasHoldings", db = "sec13f", url = "mongodb://localhost:27017")
+                  conexion <- mongo(collection = "incidenciasHoldings", db = "sec13f", url = mongoURL)
                   conexion$insert(datos[[1]]$accessionNumber)
                 }
             } else if (superaTiempo == 1) {
                 print("Error en el formulario, salto al siguiente")
-                conexion <- mongo(collection = "incidencias", db = "sec13f", url = "mongodb://localhost:27017")
-                conexion$insert(stringr::str_sub(master$EDGAR_LINK[i], -24, -5))
+                conexion <- mongo(collection = "incidencias", db = "sec13f", url = mongoURL)
+                conexion$insert(stringr::str_sub(master$edgarLink[i], -24, -5))
             }
         }  # loop
-        conexion <- mongo(collection = "registro", db = "sec13f", url = "mongodb://localhost:27017")
+        conexion <- mongo(collection = "registro", db = "sec13f", url = mongoURL)
         registro <- conexion$find()
         return(registro)
     }
