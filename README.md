@@ -11,7 +11,9 @@ La funcion `indice13f()` descarga un archivo indice master que se carga en mongo
 
 ## Requisitos previos
 
-El paquete construye una base de datos en MongoDB por lo tanto es necesario tenerlo instalado. La [documentacion](https://docs.mongodb.com/) de MongoDB esta en ingles pero hay multiples tutoriales online en espanol.
+El paquete construye una base de datos en MongoDB por lo tanto es necesario tenerlo instalado. La [documentacion](https://docs.mongodb.com/) de MongoDB esta en ingles pero hay multiples tutoriales online en espanol. 
+
++ [Guia de installacion de MongoDB](https://docs.mongodb.com/guides/server/install/)
 
 Tambien es recomedable instalar una GUI para poder acceder a los datos desde fuera de R y chequear que todo esta funcionando correctamente. Puede ser la [propia de MongoDB](https://www.mongodb.com/products/compass) o cualquier otra.
 
