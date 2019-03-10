@@ -29,16 +29,20 @@ Construye un indice que se utiliza en un paso posterior para recorrer los archiv
 
 Devuelve un dataframe con el indice y ademas lo carga en una coleccion de mongoDB.
 
-```{r, include = T}
-# library(sec13f)
-# indice13f()
-# master <- indice13f(periodo = 2019, 
-#                    nombreColeccion = indice13f,
-#                    nombreBD = sec13f,
-#                    mongoURL = 'mongodb://localhost:27017'
-#                    )
-# library(mongolite)
-# conexion <- 
+```{r, include = T, eval = F}
+library(sec13f.es)
+## Declaracion de variables
+periodo = 2019 
+nombreColeccion = "INDICE"
+nombreBD = "EDGAR13F"
+mongoURL = "mongodb://localhost:27017"
+                   
+master <- indice13f(periodo, nombreColeccion, nombreBD, mongoURL)
+print(head(master))
+
+library(mongolite)
+conexion <- mongo(collection = nombreColeccion, db = nombreBD, url = mongoURL)
+print(head(conexion$find()))
 ```
 
 ## funcion: recorreFormularios()

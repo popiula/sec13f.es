@@ -5,7 +5,7 @@
 #'
 #' @param coleccion nombre de la coleccion de mongo que contiene el indice de los formularios a recorrer
 #' @param nombreBD nombre de la base de datos de mongo que contiene el indice de los formularios a recorrer
-#' @param mongoURL parametro de la url necesaria para concectar con mongo
+#' @param mongoURL parametro de la url necesaria para conectar con mongo
 #'
 #' @return dataframe con los resultados
 #'
@@ -20,9 +20,7 @@
 #'@import stringr
 #'@import dplyr
 #'
-limpiaMaster <- function(coleccion = paste0(format(Sys.Date(), "%Y%m%d"), "indice"),
-                         nombreBD = paste0(format(Sys.Date(), "%Y%m%d"), "sec13f"),
-                         mongoURL = "mongodb://localhost:27017") {
+limpiaMaster <- function(coleccion, nombreBD, mongoURL) {
   
 # options(warn = -1) # remove warnings library(mongolite)
 conexion <- mongo(collection = coleccion, db = nombreBD, url = mongoURL)

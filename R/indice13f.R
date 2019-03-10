@@ -27,9 +27,9 @@
 #' @examples
 #' \dontrun{
 #' master <- indice13f(periodo = 2014:2019,
-#'                     nombreColeccion = indice13f,
-#'                     nombreBD = sec13f,
-#'                     mongoURL = 'mongodb://localhost:27017'
+#'                     nombreColeccion = "indice13f",
+#'                     nombreBD = "sec13f",
+#'                     mongoURL = "mongodb://localhost:27017"
 #'                     )
 #'
 #' ## Descarga un listado de los formularios enviados entre 2013 y 2018.
@@ -109,7 +109,7 @@ indice13f <- function(periodo = lubridate::year(Sys.Date()),
                 data <- data.frame(accessionNumber = stringr::str_sub(d[[5]], -24, -5), cik = d[[1]], companyName = companyName, formType = d[[3]],
                   dateFiled = d[[4]], edgarLink = d[[5]])
 
-                data <- dplyr::filter(stringr::str_detect(data$formType, "13F-HR"))
+                data <- data[stringr::str_detect(data$formType, "13F-HR"), ]
                 data$dateFiled <- as.Date(data$dateFiled)
                 submaster <- rbind(submaster, data)
                 file.remove(archivo)

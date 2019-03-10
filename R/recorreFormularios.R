@@ -25,21 +25,21 @@
 #'@import stringr
 #'
 #'@export
-recorreFormularios <- function( coleccion = paste0( format(Sys.Date(), "%Y%m%d"), "indice"),
+recorreFormularios <- function( nombreColeccion = paste0( format(Sys.Date(), "%Y%m%d"), "indice"),
                                 nombreBD = paste0( format(Sys.Date(), "%Y%m%d"), "sec13f"),
                                 mongoURL = "mongodb://localhost:27017") {
     
     inicio <- Sys.time()  # se usa para calcular el tiempo medio
     # options(warn = -1) # remove warnings
-    master <- limpiaMaster(coleccion = coleccion, nombreBD = nombreBD, mongoURL = mongoURL)
-    master <- master[order(master$dateFiled, decreasing = T), ] 
+    master <- limpiaMaster(coleccion = nombreColeccion, nombreBD = nombreBD, mongoURL = mongoURL)
+    master <- master[order(master$dateFiled, decreasing = T), ] # para que empiece por los ultimos
     
     if (nrow(master) > 0) {
         
-        total.forms <- nrow(master)
-        print(paste0("Formularios a cargar: ", total.forms))
+        totalForms <- nrow(master)
+        print(paste0("Formularios a cargar: ", totalForms))
 
-        for (i in 1:total.forms) {
+        for (i in 1:totalForms) {
             link <- paste0("https://www.sec.gov/Archives/", master$edgarLink[i])
             # print(paste0('Dentro extraeDatos() a las : ', format(Sys.time(), '%H:%M:%S')))
             superaTiempo <- 0
@@ -56,30 +56,30 @@ recorreFormularios <- function( coleccion = paste0( format(Sys.Date(), "%Y%m%d")
                 superaTiempo <- 1
             }
             tmedio <- as.character(round(difftime(Sys.time(), inicio, units = "secs")/i, digits = 2))  # tiempo medio de computacion en segundos - descarga y carga en json
-            tempStatus <- data.frame(nform = i, totalForms = total.forms, accessionNumber = stringr::str_sub(master$edgarLink[i], -24,
-                -5), hora = format(Sys.time(), "%H:%M:%S"), tiempoMedio = tmedio, excedeTiempo = superaTiempo, nfilas = datos[[3]])
+            tempStatus <- data.frame(nform = i, totalForms = totalForms, accessionNumber = stringr::str_sub(master$edgarLink[i], -24,
+                -5), hora = format(Sys.time(), "%H:%M:%S"), tiempoMedio = tmedio, excedeTiempo = superaTiempo, nfilas = datos[[1]]$tableEntryTotal2)
             print(tempStatus)
-            conexion <- mongo(collection = "registro", db = "sec13f", url = mongoURL)
+            conexion <- mongo(collection = "registro", db = nombreBD, url = mongoURL)
             conexion$insert(tempStatus)
             ## vamos con mongoDB ################################################################################################ inicio
             ## una conexion en mongoDB ###########################################################################################3
             if (superaTiempo == 0) {
-                conexion <- mongo(collection = "header", db = "sec13f", url = mongoURL)
+                conexion <- mongo(collection = "header", db = nombreBD, url = mongoURL)
                 conexion$insert(datos[[1]])
                 if (!is.na(datos[[2]])) {
-                  conexion <- mongo(collection = paste0("holdings", datos[[1]]$period), db = "sec13f", url = mongoURL)
+                  conexion <- mongo(collection = paste0("holdings", datos[[1]]$period), db = nombreBD, url = mongoURL)
                   conexion$insert(datos[[2]])
                 } else {
-                  conexion <- mongo(collection = "incidenciasHoldings", db = "sec13f", url = mongoURL)
+                  conexion <- mongo(collection = "incidenciasHoldings", db = nombreBD, url = mongoURL)
                   conexion$insert(datos[[1]]$accessionNumber)
                 }
             } else if (superaTiempo == 1) {
                 print("Error en el formulario, salto al siguiente")
-                conexion <- mongo(collection = "incidencias", db = "sec13f", url = mongoURL)
+                conexion <- mongo(collection = "incidencias", db = nombreBD, url = mongoURL)
                 conexion$insert(stringr::str_sub(master$edgarLink[i], -24, -5))
             }
         }  # loop
-        conexion <- mongo(collection = "registro", db = "sec13f", url = mongoURL)
+        conexion <- mongo(collection = "registro", db = nombreBD, url = mongoURL)
         registro <- conexion$find()
         return(registro)
     }
