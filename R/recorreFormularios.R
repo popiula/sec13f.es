@@ -22,7 +22,6 @@
 #'}
 #'
 #'@import mongolite
-#'@import dplyr
 #'@import stringr
 #'
 #'@export
@@ -42,7 +41,7 @@ recorreFormularios <- function( coleccion = paste0( format(Sys.Date(), "%Y%m%d")
                 dir.create(dirName)
             }  # crea la carpeta si no existe ya
         for (i in 1:total.forms) {
-            link <- paste0("https://www.sec.gov/Archives/", master$EDGAR_LINK[i])
+            link <- paste0("https://www.sec.gov/Archives/", master$edgarLink[i])
             # print(paste0('Dentro extraeDatos() a las : ', format(Sys.time(), '%H:%M:%S')))
             superaTiempo <- 0
             datos <- NULL
@@ -58,7 +57,7 @@ recorreFormularios <- function( coleccion = paste0( format(Sys.Date(), "%Y%m%d")
                 superaTiempo <- 1
             }
             tmedio <- as.character(round(difftime(Sys.time(), inicio, units = "secs")/i, digits = 2))  # tiempo medio de computacion en segundos - descarga y carga en json
-            tempStatus <- data.frame(nform = i, totalForms = total.forms, accessionNumber = str_sub(master$EDGAR_LINK[i], -24,
+            tempStatus <- data.frame(nform = i, totalForms = total.forms, accessionNumber = stringr::str_sub(master$edgarLink[i], -24,
                 -5), hora = format(Sys.time(), "%H:%M:%S"), tiempoMedio = tmedio, excedeTiempo = superaTiempo, nfilas = datos[[3]])
             print(tempStatus)
             conexion <- mongo(collection = "registro", db = "sec13f", url = mongoURL)
