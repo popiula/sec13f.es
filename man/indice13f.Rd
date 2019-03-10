@@ -40,7 +40,6 @@ Utiliza la funcion: descargaMaster.R de este paquete
 }
 \examples{
 \dontrun{
-
 master <- indice13f(periodo = 2014:2019,
                     nombreColeccion = indice13f,
                     nombreBD = sec13f,
@@ -48,7 +47,6 @@ master <- indice13f(periodo = 2014:2019,
                     )
 
 ## Descarga un listado de los formularios enviados entre 2013 y 2018.
-## Lo carga en la variable 'lista' (dataframe) y lo guarda como 'list.Rda' en el directorio de trabajo.
 }
 
 }

@@ -7,10 +7,13 @@
 #'
 #' @examples
 #' \dontrun{
-#' linkArchivo <- "https://www.sec.gov/Archives/edgar/data/1167557/000108514619000779/0001085146-19-000779.txt"
+#' linkArchivo <- paste0("https://www.sec.gov/Archives/edgar/data/",
+#'               "1167557/000108514619000779/0001085146-19-000779.txt")
 #'
 #' extraeDatos(linkArchivo)
-#' extraeDatos("https://www.sec.gov/Archives/edgar/data/1167557/000108514619000779/0001085146-19-000779.txt")
+#' 
+#' ## No es necesario utilizar paste0, aqui se ha usado porque, si no,
+#' ## la documentacion de R lo corta y no se ve la direccion completa.
 #' }
 #'
 #' @import XML

@@ -20,6 +20,7 @@
 #' descargar el archivo 'master'.
 #' @param nombreColeccion nombre de la coleccion de mongo en la que se va a cargar el indice
 #' @param nombreBD nombre de la base de datos de mongo en la que se va a guardar la coleccion que contiene el indice
+#' @param mongoURL url de la base de datos de mongo, Por defecto, "mongodb://localhost:27017")
 #'
 #' @return devuelve un dataframe con los datos del indice master
 #'
@@ -32,7 +33,6 @@
 #'                     )
 #'
 #' ## Descarga un listado de los formularios enviados entre 2013 y 2018.
-#' ## Lo carga en la variable 'lista' (dataframe) y lo guarda como 'list.Rda' en el directorio de trabajo.
 #' }
 #'
 #' @import mongolite

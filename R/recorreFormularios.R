@@ -33,13 +33,12 @@ recorreFormularios <- function( coleccion = paste0( format(Sys.Date(), "%Y%m%d")
     # options(warn = -1) # remove warnings
     master <- limpiaMaster(coleccion = coleccion, nombreBD = nombreBD, mongoURL = mongoURL)
     master <- master[order(master$dateFiled, decreasing = T), ] 
+    
     if (nrow(master) > 0) {
+        
         total.forms <- nrow(master)
         print(paste0("Formularios a cargar: ", total.forms))
-        if (!file.exists(dirName))
-            {
-                dir.create(dirName)
-            }  # crea la carpeta si no existe ya
+
         for (i in 1:total.forms) {
             link <- paste0("https://www.sec.gov/Archives/", master$edgarLink[i])
             # print(paste0('Dentro extraeDatos() a las : ', format(Sys.time(), '%H:%M:%S')))
