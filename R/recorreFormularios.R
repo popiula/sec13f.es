@@ -5,10 +5,6 @@
 #' resto de informacion del formulario 13f. Utiliza \link[sec13f.es]{extraeDatos} para extraer la informacion de cada
 #' formulario.
 #'
-#' @usage recorreFormularios(coleccion = paste0(format(Sys.Date(),'%Y%m%d'), 'indice'),
-#'                           nombreBD = paste0(format(Sys.Date(),'%Y%m%d'), 'sec13f'),
-#'                           mongoURL = 'mongodb://localhost:27017')
-#'
 #' @param coleccion nombre de la coleccion de mongo que contiene el indice de los formularios a recorrer
 #' @param nombreBD nombre de la base de datos de mongo que contiene el indice de los formularios a recorrer
 #' @param mongoURL parametro de la url necesaria para concectar con mongo
@@ -33,10 +29,11 @@
 recorreFormularios <- function( coleccion = paste0( format(Sys.Date(), "%Y%m%d"), "indice"),
                                 nombreBD = paste0( format(Sys.Date(), "%Y%m%d"), "sec13f"),
                                 mongoURL = "mongodb://localhost:27017") {
+    
     inicio <- Sys.time()  # se usa para calcular el tiempo medio
     # options(warn = -1) # remove warnings
-    master <- limpiaMaster(coleccion = coleccion, bd = bd, mongoURL = mongoURL)
-    master <- arrange(master, desc(DATE_FILED))
+    master <- limpiaMaster(coleccion = coleccion, db = nombreBD, mongoURL = mongoURL)
+    master <- master[order(master$dateFiled, decreasing = T), ] 
     if (nrow(master) > 0) {
         total.forms <- nrow(master)
         print(paste0("Formularios a cargar: ", total.forms))

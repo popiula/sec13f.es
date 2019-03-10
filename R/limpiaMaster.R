@@ -15,11 +15,9 @@
 #'
 #' @examples
 #' \dontrun{
-#'
 #' limpiaMaster(coleccion = paste0(format(Sys.Date(),'%Y%m%d'), 'indice'),
 #'              nombreBD = paste0(format(Sys.Date(),'%Y%m%d'), 'sec13f'),
 #'              mongoURL = 'mongodb://localhost:27017')
-#'
 #'}
 #'
 #'@import mongolite
@@ -29,14 +27,15 @@
 limpiaMaster <- function(coleccion = paste0(format(Sys.Date(), "%Y%m%d"), "indice"),
                          nombreBD = paste0(format(Sys.Date(), "%Y%m%d"), "sec13f"),
                          mongoURL = "mongodb://localhost:27017") {
+  
 # options(warn = -1) # remove warnings library(mongolite)
 conexion <- mongo(collection = coleccion, db = nombreBD, url = mongoURL)
 master <- conexion$find()
-conexion <- mongo(collection = "des13f", db = nombreBD, url = mongoURL)
+conexion <- mongo(collection = "header", db = nombreBD, url = mongoURL)
 mongoMaster <- conexion$find(query = "{}", fields = "{\"accessionNumber\" : true, \"_id\": false}"  #query = '{}', fields = '{'accessionNumber' : true, '_id': true}'
 )
 
     # necesito quedarme con las id que son los accession numbers library('dplyr') library('stringr')
-    masterLimpio <- master[!(stringr::str_sub(master$EDGAR_LINK, -24, -5) %in% mongoMaster$accessionNumber), ]
+    masterLimpio <- master[!(stringr::str_sub(master$edgarLink, -24, -5) %in% mongoMaster$accessionNumber), ]
     return(masterLimpio)
 }

@@ -4,9 +4,9 @@
 \alias{recorreFormularios}
 \title{Descarga y devuelve el contenido de los formularios de un archivo indice o solo los descarga, a eleccion del usuario}
 \usage{
-recorreFormularios(coleccion = paste0(format(Sys.Date(),'%Y%m%d'), 'indice'),
-                          nombreBD = paste0(format(Sys.Date(),'%Y%m%d'), 'sec13f'),
-                          mongoURL = 'mongodb://localhost:27017')
+recorreFormularios(coleccion = paste0(format(Sys.Date(), "\%Y\%m\%d"),
+  "indice"), nombreBD = paste0(format(Sys.Date(), "\%Y\%m\%d"),
+  "sec13f"), mongoURL = "mongodb://localhost:27017")
 }
 \arguments{
 \item{coleccion}{nombre de la coleccion de mongo que contiene el indice de los formularios a recorrer}

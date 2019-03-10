@@ -16,12 +16,6 @@
 #'
 #' Utiliza la funcion: descargaMaster.R de este paquete
 #'
-#' @usage indice13f(periodo = lubridate::year(Sys.Date()),
-#'                  nombreColeccion = paste0(format(Sys.Date(),'%Y%m%d'), 'indice'),
-#'                  nombreBD = paste0(format(Sys.Date(),'%Y%m%d'), 'sec13f'),
-#'                  mongoURL = 'mongodb://localhost:27017'
-#' )
-#'
 #' @param periodo el ano en numero entero o vector de n?meros enteros para los que se quiere
 #' descargar el archivo 'master'.
 #' @param nombreColeccion nombre de la coleccion de mongo en la que se va a cargar el indice
@@ -31,7 +25,6 @@
 #'
 #' @examples
 #' \dontrun{
-#'
 #' master <- indice13f(periodo = 2014:2019,
 #'                     nombreColeccion = indice13f,
 #'                     nombreBD = sec13f,
@@ -51,6 +44,7 @@ indice13f <- function(periodo = lubridate::year(Sys.Date()),
                       nombreColeccion = paste0(format(Sys.Date(), "%Y%m%d"), "indice"),
                       nombreBD = paste0(format(Sys.Date(), "%Y%m%d"), "sec13f"),
                       mongoURL = "mongodb://localhost:27017") {
+    
     if (!is.numeric(periodo)) {
         cat("El formato para el periodo es aaaa o un array de anos como 2016:2018.")
         return()
@@ -115,7 +109,7 @@ indice13f <- function(periodo = lubridate::year(Sys.Date()),
                 data <- data.frame(accessionNumber = stringr::str_sub(d[[5]], -24, -5), cik = d[[1]], companyName = companyName, formType = d[[3]],
                   dateFiled = d[[4]], edgarLink = d[[5]])
 
-                data <- data %>% dplyr::filter(stringr::str_detect(formType, "13F-HR"))
+                data <- dplyr::filter(stringr::str_detect(data$formType, "13F-HR"))
                 data$dateFiled <- as.Date(data$dateFiled)
                 submaster <- rbind(submaster, data)
                 file.remove(archivo)

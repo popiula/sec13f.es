@@ -1,8 +1,6 @@
 #' Es una funcion interna que descarga un archivo en el directorio de trabajo
 #' Es llamada por la funcion \link[sec13f.es]{indice13f}
 #'
-#' @usage descargaMaster(link, nombreArchivo, metodoD)
-#'
 #' @param link direccion donde se encuentra el archivo a descargar
 #' @param nombreArchivo que se le da al archivo una vez descargado
 #' @param metodoD metodo de descarga

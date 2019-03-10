@@ -24,11 +24,9 @@ Es llamada por la funcion \link[sec13f.es]{recorreFormularios} para evitar dupli
 }
 \examples{
 \dontrun{
-
 limpiaMaster(coleccion = paste0(format(Sys.Date(),'\%Y\%m\%d'), 'indice'),
              nombreBD = paste0(format(Sys.Date(),'\%Y\%m\%d'), 'sec13f'),
              mongoURL = 'mongodb://localhost:27017')
-
 }
 
 }

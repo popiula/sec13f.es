@@ -5,10 +5,9 @@
 \title{Carga en la base de datos el indice de formularios}
 \usage{
 indice13f(periodo = lubridate::year(Sys.Date()),
-                 nombreColeccion = paste0(format(Sys.Date(),'%Y%m%d'), 'indice'),
-                 nombreBD = paste0(format(Sys.Date(),'%Y%m%d'), 'sec13f'),
-                 mongoURL = 'mongodb://localhost:27017'
-)
+  nombreColeccion = paste0(format(Sys.Date(), "\%Y\%m\%d"), "indice"),
+  nombreBD = paste0(format(Sys.Date(), "\%Y\%m\%d"), "sec13f"),
+  mongoURL = "mongodb://localhost:27017")
 }
 \arguments{
 \item{periodo}{el ano en numero entero o vector de n?meros enteros para los que se quiere
