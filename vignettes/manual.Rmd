@@ -37,10 +37,8 @@ Devuelve un dataframe con el indice y ademas lo carga en una coleccion de mongoD
 #                    nombreBD = sec13f,
 #                    mongoURL = 'mongodb://localhost:27017'
 #                    )
-
 # library(mongolite)
 # conexion <- 
-
 ```
 
 ## funcion: recorreFormularios()
@@ -52,7 +50,6 @@ Utiliza el indice construido con la funcion anterior: `indice13f()` para recorre
 # recorreFormularios(coleccion = paste0(format(Sys.Date(), "%Y%m%d"), "indice"), 
 #                    db = paste0(format(Sys.Date(), "%Y%m%d"), "sec13f"), 
 #                    mongoURL = "mongodb://localhost:27017")
-
 ```
 
 ## funcion: extraeDatos()
@@ -65,9 +62,7 @@ Toma como input un archivo de texto en el formato de los archivos que contienen 
 Por ejemplo, el [formulario 13f de AQR Capital Management LLC del cuarto trimestre de 2018](https://www.sec.gov/Archives/edgar/data/1167557/000108514619000779/0001085146-19-000779.txt)
 
 ```{r, include = T}
-
 # extraeDatos("https://www.sec.gov/Archives/edgar/data/1167557/000108514619000779/0001085146-19-000779.txt")
-
 ```
 
 

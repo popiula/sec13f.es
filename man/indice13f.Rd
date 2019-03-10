@@ -16,6 +16,8 @@ descargar el archivo 'master'.}
 \item{nombreColeccion}{nombre de la coleccion de mongo en la que se va a cargar el indice}
 
 \item{nombreBD}{nombre de la base de datos de mongo en la que se va a guardar la coleccion que contiene el indice}
+
+\item{mongoURL}{url de la base de datos de mongo, Por defecto, "mongodb://localhost:27017")}
 }
 \value{
 devuelve un dataframe con los datos del indice master
