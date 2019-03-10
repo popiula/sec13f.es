@@ -5,15 +5,12 @@
 \title{Carga en la base de datos el indice de formularios}
 \usage{
 indice13f(periodo = lubridate::year(Sys.Date()),
-  nombreColeccion = paste0(format(Sys.Date(), "\%Y\%m\%d"), "indice"),
   nombreBD = paste0(format(Sys.Date(), "\%Y\%m\%d"), "sec13f"),
   mongoURL = "mongodb://localhost:27017")
 }
 \arguments{
 \item{periodo}{el ano en numero entero o vector de n?meros enteros para los que se quiere
 descargar el archivo 'master'.}
-
-\item{nombreColeccion}{nombre de la coleccion de mongo en la que se va a cargar el indice}
 
 \item{nombreBD}{nombre de la base de datos de mongo en la que se va a guardar la coleccion que contiene el indice}
 
@@ -43,7 +40,6 @@ Utiliza la funcion: descargaMaster.R de este paquete
 \examples{
 \dontrun{
 master <- indice13f(periodo = 2014:2019,
-                    nombreColeccion = "indice13f",
                     nombreBD = "sec13f",
                     mongoURL = "mongodb://localhost:27017"
                     )

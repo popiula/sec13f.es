@@ -4,11 +4,9 @@
 \alias{limpiaMaster}
 \title{Descarga y devuelve el contenido de los formularios de un archivo indice o solo los descarga, a eleccion del usuario}
 \usage{
-limpiaMaster(coleccion, nombreBD, mongoURL)
+limpiaMaster(nombreBD, mongoURL)
 }
 \arguments{
-\item{coleccion}{nombre de la coleccion de mongo que contiene el indice de los formularios a recorrer}
-
 \item{nombreBD}{nombre de la base de datos de mongo que contiene el indice de los formularios a recorrer}
 
 \item{mongoURL}{parametro de la url necesaria para conectar con mongo}
@@ -22,9 +20,8 @@ Es llamada por la funcion \link[sec13f.es]{recorreFormularios} para evitar dupli
 }
 \examples{
 \dontrun{
-limpiaMaster(coleccion = paste0(format(Sys.Date(),'\%Y\%m\%d'), 'indice'),
-             nombreBD = paste0(format(Sys.Date(),'\%Y\%m\%d'), 'sec13f'),
-             mongoURL = 'mongodb://localhost:27017')
+limpiaMaster( nombreBD = paste0(format(Sys.Date(),'\%Y\%m\%d'), 'sec13f'),
+              mongoURL = 'mongodb://localhost:27017')
 }
 
 }

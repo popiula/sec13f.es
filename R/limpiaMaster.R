@@ -3,7 +3,6 @@
 #' \link[sec13f.es]{limpiaMaster} Elimina del indice los formularios ya cargados en la base de datos de mongo
 #' Es llamada por la funcion \link[sec13f.es]{recorreFormularios} para evitar duplicar el trabajo y duplicar los registros de formularios.
 #'
-#' @param coleccion nombre de la coleccion de mongo que contiene el indice de los formularios a recorrer
 #' @param nombreBD nombre de la base de datos de mongo que contiene el indice de los formularios a recorrer
 #' @param mongoURL parametro de la url necesaria para conectar con mongo
 #'
@@ -11,19 +10,18 @@
 #'
 #' @examples
 #' \dontrun{
-#' limpiaMaster(coleccion = paste0(format(Sys.Date(),'%Y%m%d'), 'indice'),
-#'              nombreBD = paste0(format(Sys.Date(),'%Y%m%d'), 'sec13f'),
-#'              mongoURL = 'mongodb://localhost:27017')
+#' limpiaMaster( nombreBD = paste0(format(Sys.Date(),'%Y%m%d'), 'sec13f'),
+#'               mongoURL = 'mongodb://localhost:27017')
 #'}
 #'
 #'@import mongolite
 #'@import stringr
 #'@import dplyr
 #'
-limpiaMaster <- function(coleccion, nombreBD, mongoURL) {
+limpiaMaster <- function(nombreBD, mongoURL) {
   
 # options(warn = -1) # remove warnings library(mongolite)
-conexion <- mongo(collection = coleccion, db = nombreBD, url = mongoURL)
+conexion <- mongo(collection = "indice", db = nombreBD, url = mongoURL)
 master <- conexion$find()
 conexion <- mongo(collection = "header", db = nombreBD, url = mongoURL)
 mongoMaster <- conexion$find(query = "{}", fields = "{\"accessionNumber\" : true, \"_id\": false}"  #query = '{}', fields = '{'accessionNumber' : true, '_id': true}'

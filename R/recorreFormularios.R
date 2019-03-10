@@ -5,7 +5,6 @@
 #' resto de informacion del formulario 13f. Utiliza \link[sec13f.es]{extraeDatos} para extraer la informacion de cada
 #' formulario.
 #'
-#' @param coleccion nombre de la coleccion de mongo que contiene el indice de los formularios a recorrer
 #' @param nombreBD nombre de la base de datos de mongo que contiene el indice de los formularios a recorrer
 #' @param mongoURL parametro de la url necesaria para concectar con mongo
 #'
@@ -16,22 +15,20 @@
 #'
 #' @examples
 #' \dontrun{
-#' recorreFormularios(coleccion = paste0(format(Sys.Date(),'%Y%m%d'), 'indice'),
-#'                    nombreBD = paste0(format(Sys.Date(),'%Y%m%d'), 'sec13f'),
-#'                    mongoURL = 'mongodb://localhost:27017')
+#' recorreFormularios( nombreBD = paste0(format(Sys.Date(),'%Y%m%d'), 'sec13f'),
+#'                     mongoURL = 'mongodb://localhost:27017')
 #'}
 #'
 #'@import mongolite
 #'@import stringr
 #'
 #'@export
-recorreFormularios <- function( nombreColeccion = paste0( format(Sys.Date(), "%Y%m%d"), "indice"),
-                                nombreBD = paste0( format(Sys.Date(), "%Y%m%d"), "sec13f"),
+recorreFormularios <- function( nombreBD = paste0( format(Sys.Date(), "%Y%m%d"), "sec13f"),
                                 mongoURL = "mongodb://localhost:27017") {
     
     inicio <- Sys.time()  # se usa para calcular el tiempo medio
     # options(warn = -1) # remove warnings
-    master <- limpiaMaster(coleccion = nombreColeccion, nombreBD = nombreBD, mongoURL = mongoURL)
+    master <- limpiaMaster(nombreBD = nombreBD, mongoURL = mongoURL)
     master <- master[order(master$dateFiled, decreasing = T), ] # para que empiece por los ultimos
     
     if (nrow(master) > 0) {
@@ -54,10 +51,18 @@ recorreFormularios <- function( nombreColeccion = paste0( format(Sys.Date(), "%Y
 
             if (is.null(datos)) {
                 superaTiempo <- 1
-            }
+                nfil <- 0
+            } else { nfil <- datos[[1]]$tableEntryTotal2 }
+            
             tmedio <- as.character(round(difftime(Sys.time(), inicio, units = "secs")/i, digits = 2))  # tiempo medio de computacion en segundos - descarga y carga en json
-            tempStatus <- data.frame(nform = i, totalForms = totalForms, accessionNumber = stringr::str_sub(master$edgarLink[i], -24,
-                -5), hora = format(Sys.time(), "%H:%M:%S"), tiempoMedio = tmedio, excedeTiempo = superaTiempo, nfilas = datos[[1]]$tableEntryTotal2)
+            tempStatus <- data.frame( nform = i, 
+                                      totalForms = totalForms, 
+                                      accessionNumber = stringr::str_sub(master$edgarLink[i], -24, -5), 
+                                      horaInicio = format(inicio, "%H:%M:%S"),
+                                      horaCarga = format(Sys.time(), "%H:%M:%S"), 
+                                      tiempoMedio = tmedio, 
+                                      excedeTiempo = superaTiempo, 
+                                      nfilas = nfil)
             print(tempStatus)
             conexion <- mongo(collection = "registro", db = nombreBD, url = mongoURL)
             conexion$insert(tempStatus)

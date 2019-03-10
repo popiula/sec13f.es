@@ -18,7 +18,6 @@
 #'
 #' @param periodo el ano en numero entero o vector de n?meros enteros para los que se quiere
 #' descargar el archivo 'master'.
-#' @param nombreColeccion nombre de la coleccion de mongo en la que se va a cargar el indice
 #' @param nombreBD nombre de la base de datos de mongo en la que se va a guardar la coleccion que contiene el indice
 #' @param mongoURL url de la base de datos de mongo, Por defecto, "mongodb://localhost:27017")
 #'
@@ -27,7 +26,6 @@
 #' @examples
 #' \dontrun{
 #' master <- indice13f(periodo = 2014:2019,
-#'                     nombreColeccion = "indice13f",
 #'                     nombreBD = "sec13f",
 #'                     mongoURL = "mongodb://localhost:27017"
 #'                     )
@@ -41,7 +39,6 @@
 #'
 #' @export
 indice13f <- function(periodo = lubridate::year(Sys.Date()),
-                      nombreColeccion = paste0(format(Sys.Date(), "%Y%m%d"), "indice"),
                       nombreBD = paste0(format(Sys.Date(), "%Y%m%d"), "sec13f"),
                       mongoURL = "mongodb://localhost:27017") {
     
@@ -122,7 +119,7 @@ indice13f <- function(periodo = lubridate::year(Sys.Date()),
         }
         master <- rbind(master, submaster)
     }
-    conexion <- mongolite::mongo(collection = nombreColeccion, db = nombreBD, url = mongoURL)
+    conexion <- mongolite::mongo(collection = "indice", db = nombreBD, url = mongoURL)
     # si la coleccion esta vacia entonces
     if (is.null(conexion$info()$stats$count)) {
         conexion$insert(master)
