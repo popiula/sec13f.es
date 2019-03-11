@@ -13,7 +13,9 @@ inst/doc
 # Output files from R CMD check
 /*.Rcheck/
 # RStudio files
-.Rproj.user/
+/*.Rproj.user/
+/*.Rproj
+/*.es.Rproj
 # produced vignettes
 vignettes/*.html
 vignettes/*.pdf
