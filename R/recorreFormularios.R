@@ -7,6 +7,7 @@
 #'
 #' @param nombreBD nombre de la base de datos de mongo que contiene el indice de los formularios a recorrer
 #' @param mongoURL parametro de la url necesaria para concectar con mongo
+#' @param tiempoLim tiempo limite en segundos para extraer los datos de un formulario. 5 minutos por defecto.
 #'
 #' @return devuelve el dataframe con el listado de los formularios registrados en ese o esos periodos.
 #'   lo descarga de \url{https://www.sec.gov/Archives/edgar/full-index/}
@@ -24,7 +25,7 @@
 #'
 #'@export
 recorreFormularios <- function( nombreBD = paste0( format(Sys.Date(), "%Y%m%d"), "sec13f"),
-                                mongoURL = "mongodb://localhost:27017") {
+                                mongoURL = "mongodb://localhost:27017", tiempoLim = 60 * 5) {
     
     inicio <- Sys.time()  # se usa para calcular el tiempo medio
     # options(warn = -1) # remove warnings
@@ -44,7 +45,7 @@ recorreFormularios <- function( nombreBD = paste0( format(Sys.Date(), "%Y%m%d"),
             tryCatch({
                 datos <- withTimeout({
                   extraeDatos(link)
-                }, timeout = 60 * 5)
+                }, timeout = tiempoLim)
             }, TimeoutException = function(ex) {
                 message(paste0(stringr::str_sub(master$edgarLink[i], -24, -5), " Timeout. Salta el formulario."))
             })
@@ -52,7 +53,13 @@ recorreFormularios <- function( nombreBD = paste0( format(Sys.Date(), "%Y%m%d"),
             if (is.null(datos)) {
                 superaTiempo <- 1
                 nfil <- 0
-            } else { nfil <- datos[[1]]$tableEntryTotal2 }
+            } else { 
+                if (is.null(datos[[1]]$tableEntryTotal2)) {
+                        nfil <- 0
+                } else {
+                        nfil <- datos[[1]]$tableEntryTotal2
+                        }
+                }
             
             tmedio <- as.character(round(difftime(Sys.time(), inicio, units = "secs")/i, digits = 2))  # tiempo medio de computacion en segundos - descarga y carga en json
             tempStatus <- data.frame( nform = i, 
@@ -74,16 +81,9 @@ recorreFormularios <- function( nombreBD = paste0( format(Sys.Date(), "%Y%m%d"),
                 if (!is.na(datos[[2]])) {
                   conexion <- mongo(collection = paste0("holdings", datos[[1]]$period), db = nombreBD, url = mongoURL)
                   conexion$insert(datos[[2]])
-                } else {
-                  conexion <- mongo(collection = "incidenciasHoldings", db = nombreBD, url = mongoURL)
-                  conexion$insert(datos[[1]]$accessionNumber)
                 }
-            } else if (superaTiempo == 1) {
-                print("Error en el formulario, salto al siguiente")
-                conexion <- mongo(collection = "incidencias", db = nombreBD, url = mongoURL)
-                conexion$insert(stringr::str_sub(master$edgarLink[i], -24, -5))
             }
-        }  # loop
+        }  # loop 
         conexion <- mongo(collection = "registro", db = nombreBD, url = mongoURL)
         registro <- conexion$find()
         return(registro)
