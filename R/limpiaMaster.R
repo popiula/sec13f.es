@@ -21,9 +21,9 @@
 limpiaMaster <- function(nombreBD, mongoURL) {
   
 # options(warn = -1) # remove warnings library(mongolite)
-conexion <- mongo(collection = "indice", db = nombreBD, url = mongoURL)
+conexion <- mongolite::mongo(collection = "indice", db = nombreBD, url = mongoURL)
 master <- conexion$find()
-conexion <- mongo(collection = "header", db = nombreBD, url = mongoURL)
+conexion <- mongolite::mongo(collection = "header", db = nombreBD, url = mongoURL)
 mongoMaster <- conexion$find(query = "{}", fields = "{\"accessionNumber\" : true, \"_id\": false}"  #query = '{}', fields = '{'accessionNumber' : true, '_id': true}'
 )
 
