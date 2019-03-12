@@ -78,7 +78,7 @@ recorreFormularios <- function( nombreBD = paste0( format(Sys.Date(), "%Y%m%d"),
             if (superaTiempo == 0) {
                 conexion <- mongo(collection = "header", db = nombreBD, url = mongoURL)
                 conexion$insert(datos[[1]])
-                if (!is.na(datos[[2]])) {
+                if (!is.na(datos[[2]][1, 1])) {
                   conexion <- mongo(collection = paste0("holdings", datos[[1]]$period), db = nombreBD, url = mongoURL)
                   conexion$insert(datos[[2]])
                 }
