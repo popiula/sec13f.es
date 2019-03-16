@@ -22,6 +22,8 @@
 #'
 #'@import mongolite
 #'@import stringr
+#'@import R.utils
+#'@import dplyr
 #'
 #'@export
 recorreFormularios <- function( nombreBD = paste0( format(Sys.Date(), "%Y%m%d"), "sec13f"),
@@ -29,6 +31,20 @@ recorreFormularios <- function( nombreBD = paste0( format(Sys.Date(), "%Y%m%d"),
     
     inicio <- Sys.time()  # se usa para calcular el tiempo medio
     # options(warn = -1) # remove warnings
+    limpiaMaster <- function(nombreBD, mongoURL) {
+        
+        # options(warn = -1) # remove warnings library(mongolite)
+        conexion <- mongolite::mongo(collection = "indice", db = nombreBD, url = mongoURL)
+        master <- conexion$find()
+        conexion <- mongolite::mongo(collection = "header", db = nombreBD, url = mongoURL)
+        mongoMaster <- conexion$find(query = "{}", fields = "{\"accessionNumber\" : true, \"_id\": false}"  #query = '{}', fields = '{'accessionNumber' : true, '_id': true}'
+        )
+        
+        # necesito quedarme con las id que son los accession numbers library('dplyr') library('stringr')
+        masterLimpio <- master[!(stringr::str_sub(master$edgarLink, -24, -5) %in% mongoMaster$accessionNumber), ]
+        return(masterLimpio)
+    }
+    
     master <- limpiaMaster(nombreBD = nombreBD, mongoURL = mongoURL)
     master <- master[order(master$dateFiled, decreasing = T), ] # para que empiece por los ultimos
     
@@ -43,7 +59,7 @@ recorreFormularios <- function( nombreBD = paste0( format(Sys.Date(), "%Y%m%d"),
             superaTiempo <- 0
             datos <- NULL
             tryCatch({
-                datos <- withTimeout({
+                datos <- R.utils::withTimeout({
                   extraeDatos(link)
                 }, timeout = tiempoLim)
             }, TimeoutException = function(ex) {
@@ -78,9 +94,12 @@ recorreFormularios <- function( nombreBD = paste0( format(Sys.Date(), "%Y%m%d"),
             if (superaTiempo == 0) {
                 conexion <- mongo(collection = "header", db = nombreBD, url = mongoURL)
                 conexion$insert(datos[[1]])
-                if (!is.na(datos[[2]][1, 1])) {
-                  conexion <- mongo(collection = paste0("holdings", datos[[1]]$period), db = nombreBD, url = mongoURL)
-                  conexion$insert(datos[[2]])
+                # condicion anterior: !is.na(datos[[2]][1, 1])
+                if (!is.null(datos[[2]])) {
+                    if (!is.na(datos[[2]][1, 1])) {
+                      conexion <- mongo(collection = paste0("holdings", datos[[1]]$period), db = nombreBD, url = mongoURL)
+                      conexion$insert(datos[[2]])
+                    }
                 }
             }
         }  # loop 
