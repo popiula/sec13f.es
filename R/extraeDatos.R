@@ -90,44 +90,55 @@ extraeDatos <- function(linkArchivo) {
     pto2 <- dfpos[2, 2] - 6
     pto3 <- dfpos[3, 2] + 1
     pto4 <- dfpos[4, 2] - 6
-    # str_trim removes whitespace from start and end of string
-    edgarSubmission <- stringr::str_trim(substr(txtData, pto1, pto2))
-    informationTable <- stringr::str_trim(substr(txtData, pto3, pto4))  # str_trim removes whitespace from start and end of string
-    rm(txtData)
-    ## EDGAR SUBMISSION ###############################################################################################
-    ## print('Dentro Summary')
-    xmlfile <- XML::xmlParse(edgarSubmission)  # limpia y deja solo la estructura XML, es decir, construye el arbol XML
-    # devuelve un XMLInternalDocument
-    rm(edgarSubmission)
-    root <- XML::xmlRoot(xmlfile)  # xml_root <- root
-    rm(xmlfile)
-    edgarSubmissiondf <- parseXML(root, campos = c("headerData.submissionType", "formData.coverPage.isAmendment", "formData.coverPage.reportType",
-        "formData.summaryPage.otherIncludedManagersCount", "formData.summaryPage.tableEntryTotal", "formData.summaryPage.tableValueTotal"))
-
-    names(edgarSubmissiondf) <- c("submissionType", "isAmendment", "reportType", "otherIncludedManagersCount", "tableEntryTotal",
-        "tableValueTotal")
-    rm(root)
-
-    desdf <- as.data.frame(c(headerdf, edgarSubmissiondf))
-
-    ## INFORMATIONTABLE (HOLDINGS) ###############################################################################################
-    if (!is.na(informationTable)) {
-        xmlfile <- XML::xmlParse(informationTable)  # limpia y deja solo la estructura XML, es decir, construye el arbol XML
-        rm(informationTable)
+    
+    if (nrow(dfpos) > 0 ) {
+        # str_trim removes whitespace from start and end of string
+        edgarSubmission <- stringr::str_trim(substr(txtData, pto1, pto2))
+        informationTable <- stringr::str_trim(substr(txtData, pto3, pto4))  # str_trim removes whitespace from start and end of string
+        
+        rm(txtData) # esta dentro del if, es decir se borra una vez que se que es XML y lo extraigo
+        
+        ## EDGAR SUBMISSION ###############################################################################################
+        ## print('Dentro Summary')
+        xmlfile <- XML::xmlParse(edgarSubmission)  # limpia y deja solo la estructura XML, es decir, construye el arbol XML
         # devuelve un XMLInternalDocument
+        rm(edgarSubmission)
         root <- XML::xmlRoot(xmlfile)  # xml_root <- root
         rm(xmlfile)
-        data <- parse13f(root, campos = c("nameOfIssuer", "titleOfClass", "cusip", "value", "shrsOrPrnAmt.sshPrnamt", "shrsOrPrnAmt.sshPrnamtType",
-            "investmentDiscretion", "otherManager", "votingAuthority.Sole", "votingAuthority.Shared", "votingAuthority.None",
-            "putCall"))
-        informationTabledf <- as.data.frame(data[[1]], stringsAsFactors = F)
-        desdf$tableEntryTotal2  <- data[[2]]
-        rownames(informationTabledf) <- NULL
+        edgarSubmissiondf <- parseXML(root, campos = c("headerData.submissionType", "formData.coverPage.isAmendment", "formData.coverPage.reportType",
+            "formData.summaryPage.otherIncludedManagersCount", "formData.summaryPage.tableEntryTotal", "formData.summaryPage.tableValueTotal"))
+    
+        names(edgarSubmissiondf) <- c("submissionType", "isAmendment", "reportType", "otherIncludedManagersCount", "tableEntryTotal",
+            "tableValueTotal")
         rm(root)
-        informationTabledf$accessionNumber <- headerdf$accessionNumber
+    
+        desdf <- as.data.frame(c(headerdf, edgarSubmissiondf))
+    
+        ## INFORMATIONTABLE (HOLDINGS) ###############################################################################################
+        if (!is.na(informationTable)) {
+            xmlfile <- XML::xmlParse(informationTable)  # limpia y deja solo la estructura XML, es decir, construye el arbol XML
+            rm(informationTable)
+            # devuelve un XMLInternalDocument
+            root <- XML::xmlRoot(xmlfile)  # xml_root <- root
+            rm(xmlfile)
+            data <- parse13f(root, campos = c("nameOfIssuer", "titleOfClass", "cusip", "value", "shrsOrPrnAmt.sshPrnamt", "shrsOrPrnAmt.sshPrnamtType",
+                "investmentDiscretion", "otherManager", "votingAuthority.Sole", "votingAuthority.Shared", "votingAuthority.None",
+                "putCall"))
+            informationTabledf <- as.data.frame(data[[1]], stringsAsFactors = F)
+            desdf$tableEntryTotal2  <- data[[2]]
+            rownames(informationTabledf) <- NULL
+            rm(root)
+            informationTabledf$accessionNumber <- headerdf$accessionNumber
+        } else {
+            informationTabledf <- informationTable
+        }
     } else {
-        informationTabledf <- informationTable
+        # cuando el txt no tiene formato de XML, es el caso de formularios anteriores a 2013
+        # en ese caso solo tengo los datos del header, de momento
+        desdf <- headerdf
+        informationTabledf <- tablaInvAntigua(txtData)
     }
+    
     # devuelve dos dataframes
     return(list(desdf, informationTabledf))  # datos <- list(desdf, informationTabledf)
 }
