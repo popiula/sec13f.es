@@ -10,7 +10,7 @@ Description: El paquete sirve para construir una base de datos en mongoDB a part
     la informacion online disponible en EDGAR de los formularios 13f de la SEC.
     Los formularios 13f contienen informacion de las carteras de inversores en EEUU con 
     mas de 100 millones de dolares en acciones.
-License: GPL-3
+License: AGPL-3
 Encoding: UTF-8
 LazyData: true
 Imports: 

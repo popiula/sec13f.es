@@ -8,8 +8,8 @@
         devtools.path = "~/R-dev",
         devtools.install.args = "",
         devtools.name = "Ana",
-        devtools.desc.author = "Ana Guarida <ana.guardia@gmail.com> [aut, cre]",
-        devtools.desc.license = "GPL-3",
+        devtools.desc.author = "Ana Guardia <ana.guardia@gmail.com> [aut, cre]",
+        devtools.desc.license = "AGPL-3",
         devtools.desc.suggests = NULL,
         devtools.desc = list()
     )
